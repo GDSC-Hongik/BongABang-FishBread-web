@@ -318,6 +318,11 @@
   margin-top: 1%;
 }
 
+.detail-modal-checktext {
+  margin: 0;
+  margin-top: 3px;
+}
+
 .detail-modal-list {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
