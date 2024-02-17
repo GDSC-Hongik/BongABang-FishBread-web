@@ -6,7 +6,6 @@ import { useShoppingCart } from '../hooks/shoppingCart';
 function Pay({ setModal, method }) {
   const [shoppingCart, setShoppingCart] = useShoppingCart();
   const [orderNum, incrementOrderNum] = useOrder();
-  console.log(method);
 
   const closeModal = () => {
     setModal(false);
