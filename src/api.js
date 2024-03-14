@@ -6,7 +6,9 @@ export async function getMenus() {
 
 export async function audioLoad() {
   try {
-    const response = await fetch('');
+    const response = await fetch(
+      'https://bongabangaudio.s3.ap-southeast-2.amazonaws.com/audio/newoutput_v1_20240309142553.mp3'
+    );
     const blob = await response.blob();
     const audioURL = URL.createObjectURL(blob);
 

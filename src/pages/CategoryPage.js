@@ -37,12 +37,17 @@ function CategoryPage() {
   useEffect(() => {
     getMenus();
     Modal.setAppElement('#root');
+
+    const URL = audioLoad();
+    setAudioURL(URL);
   }, []);
 
   useEffect(() => {
-    const URL = audioLoad();
-    setAudioURL(URL);
-  });
+    if (audioURL) {
+      const audio = new Audio(audioURL);
+      audio.play();
+    }
+  }, [audioURL]);
 
   // 총 가격을 계산하는 함수
   const calculateTotalPrice = () => {
