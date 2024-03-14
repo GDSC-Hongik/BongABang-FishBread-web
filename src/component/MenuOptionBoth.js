@@ -11,7 +11,6 @@ function MenuOptionBoth({ menu, setOption }) {
   const [shoppingCart, setShoppingCart] = useShoppingCart();
   const [totalPrice, setTotalPrice] = useState(0);
   const [count, setCount] = useState(1);
-  const [isCupClicked, setIsCupClicked] = useState(null);
   const [isTumblerClicked, setIsTumblerClicked] = useState(null);
   const [isTempClicked, setIsTempClicked] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -65,11 +64,6 @@ function MenuOptionBoth({ menu, setOption }) {
     setOption(false);
   };
 
-  const handleCupClick = (e) => {
-    const clickedValue = e.target.value;
-    setIsCupClicked(clickedValue);
-  };
-
   const handleTumblerClick = (e) => {
     const clickedValue = e.target.value;
     setIsTumblerClicked(clickedValue);
@@ -84,17 +78,19 @@ function MenuOptionBoth({ menu, setOption }) {
   };
 
   const putItem = () => {
-    let itemOption = {
-      id: menu.id,
-      name: menu.name,
-      count: count,
-      size: isCupSizeClicked,
-      temp: activeTemp,
-      tumbler: isTumblerClicked,
-      price: totalPrice,
-    };
-    setShoppingCart((prevItem) => [...prevItem, itemOption]);
-    closeOption();
+    if (isTempClicked && isCupSizeClicked && isTumblerClicked) {
+      let itemOption = {
+        id: menu.id,
+        name: menu.name,
+        count: count,
+        size: isCupSizeClicked,
+        temp: activeTemp,
+        tumbler: isTumblerClicked,
+        price: totalPrice,
+      };
+      setShoppingCart((prevItem) => [...prevItem, itemOption]);
+      closeOption();
+    }
   };
 
   useEffect(() => {

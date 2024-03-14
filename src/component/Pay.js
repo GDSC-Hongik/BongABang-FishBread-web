@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import './Pay.css';
-import { useOrder } from '../hooks/orderContext';
-import { useShoppingCart } from '../hooks/shoppingCart';
+import { Link } from "react-router-dom";
+import "./Pay.css";
+import { useOrder } from "../hooks/orderContext";
+import { useShoppingCart } from "../hooks/shoppingCart";
 
 function Pay({ setModal, method }) {
   const [shoppingCart, setShoppingCart] = useShoppingCart();
@@ -19,15 +19,15 @@ function Pay({ setModal, method }) {
 
   let text;
 
-  if (method === '카드결제') {
-    text = '아래의 카드 리더기에 카드를 꽂아주세요!';
+  if (method === "카드결제") {
+    text = "아래의 카드 리더기에 카드를 꽂아주세요!";
   } else if (
-    method === '기프티콘' ||
-    method === '선불카드' ||
-    method === '카카오페이'
+    method === "기프티콘" ||
+    method === "선불카드" ||
+    method === "카카오페이"
   ) {
-    text = '아래에 바코드를 찍어주세요!';
-  } else if (method === '직원호출') {
+    text = "아래에 바코드를 찍어주세요!";
+  } else if (method === "직원호출") {
     text = (
       <>
         직원을 호출하는 중이에요!

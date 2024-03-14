@@ -1,12 +1,13 @@
 // App.js
-import React, { useEffect, useState } from 'react';
-import BackButton from './BackButton';
-import './App.css';
-import Call from './Call';
-import Pay from './Pay';
-import Payment from './Payment';
-import { useShoppingCart } from '../hooks/shoppingCart';
-import Modal from 'react-modal';
+import React, { useEffect, useState } from "react";
+import BackButton from "./BackButton";
+import "./App.css";
+import Call from "./Call";
+import Pay from "./Pay";
+import Payment from "./Payment";
+import { useShoppingCart } from "../hooks/shoppingCart";
+import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [modal, setModal] = useState(false);
@@ -22,8 +23,13 @@ function App() {
     console.log(shoppingCart);
   }, []);
 
+  const navigate = useNavigate();
+  const goToNextPage = () => {
+    navigate("/pay/payOK"); // 다음 페이지로 이동
+  };
+
   return (
-    <div className="App">
+    <div className="App" onClick={() => showModal("카드결제")}>
       <div className="nav">
         <BackButton
           shoppingCart={shoppingCart}
@@ -39,39 +45,43 @@ function App() {
       <div className="paymentRow">
         <div>
           <Payment
-            method={'카드 결제'}
+            method={"카드 결제"}
             imgSrc={`${process.env.PUBLIC_URL}/Imgs/card.svg`}
-            showModal={() => showModal('카드결제')}
+            showModal={() => showModal("카드결제")}
           />
         </div>
         <div>
           <Payment
-            method={'기프티콘'}
+            method={"기프티콘"}
             imgSrc={`${process.env.PUBLIC_URL}/Imgs/Vector.svg`}
-            showModal={() => showModal('기프티콘')}
+            showModal={() => showModal("기프티콘")}
           />
         </div>
       </div>
       <div className="paymentRow">
         <div>
           <Payment
-            method={'선불 카드'}
+            method={"선불 카드"}
             imgSrc={`${process.env.PUBLIC_URL}/Imgs/선불카드 2.svg`}
-            showModal={() => showModal('선불카드')}
+            showModal={() => showModal("선불카드")}
           />
         </div>
         <div>
           <Payment
-            method={'카카오페이'}
+            method={"카카오페이"}
             imgSrc={`${process.env.PUBLIC_URL}/Imgs/카카오페이 1.svg`}
-            showModal={() => showModal('카카오페이')}
+            showModal={() => showModal("카카오페이")}
           />
         </div>
       </div>
       <div className="smallButton">
-        <Call showModal={() => showModal('직원호출')} />
+        <Call showModal={() => showModal("직원호출")} />
       </div>
-      <Modal isOpen={modal} className="pay-card">
+      <Modal
+        isOpen={modal}
+        className="pay-card"
+        onRequestClose={() => goToNextPage()}
+      >
         <Pay setModal={setModal} method={payMethod} />
       </Modal>
     </div>

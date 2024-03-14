@@ -7,35 +7,16 @@ import CurrentTime from '../component/CurrentTime';
 import MenuOptionBoth from '../component/MenuOptionBoth';
 import Message from '../component/Message';
 import { useShoppingCart } from '../hooks/shoppingCart';
-
-const messages = '안녕녕하신가요';
-const messages2 = '안녕하세요 김년욱입니다. 여기는 장바구니입니다.';
-// const messages = [
-//   "안녕하세요!",
-//   "이 말풍선은 길어질까요?",
-//   "짧아지나요?",
-//   "리액트로 말풍선을 만들어 보는 중입니다.",
-//   "다양한 말을 넣어서 테스트해 보세요!",
-// ];
-
-const menusDetail = [
-  {
-    id: 1,
-    menu: '아메리카노',
-    options: '아이스, 샷 추가x1',
-    price: 4000,
-    number: 1,
-  },
-  {
-    id: 2,
-    menu: '아포카토',
-    options: '샷 추가x3',
-    price: 5000,
-    number: 2,
-  },
-];
+import { audioLoad } from '../api';
 
 function CategoryPage() {
+  const [messages, setMessages] = useState(
+    '안녕녕하세요! 할메가커피에 오신 것을 환영합니다. 주문을 도와드릴까요?'
+  );
+  const [messages2, setMessages2] = useState(
+    '주문문하신 메뉴가 맞는지 확인해주세요!'
+  );
+
   const navigate = useNavigate();
   const [shoppingCart, setShoppingCart] = useShoppingCart();
   const [loading, setLoading] = useState(false);
@@ -45,9 +26,10 @@ function CategoryPage() {
   const [payIsOpen, setPayIsOpen] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const isZero = menusDetail.length === 0;
+  const [audioURL, setAudioURL] = useState('');
+
   const getMenus = async () => {
-    const json = await (await fetch('/megaMenu.json')).json();
+    const json = await (await fetch('/megaMenu.json')).json(); // url : 절대주소/api/cafe/v1/menus
     setMenus(json);
     setLoading(false);
   };
@@ -58,9 +40,9 @@ function CategoryPage() {
   }, []);
 
   useEffect(() => {
-    const totalPrice = calculateTotalPrice();
-    // 여기서 totalPrice를 사용할 수 있습니다.
-  }, [shoppingCart]);
+    const URL = audioLoad();
+    setAudioURL(URL);
+  });
 
   // 총 가격을 계산하는 함수
   const calculateTotalPrice = () => {
@@ -95,6 +77,7 @@ function CategoryPage() {
 
     setShoppingCart(updatedMenu);
   };
+
   const filteredMenus = menus.filter((menu) => {
     // 'all' 카테고리가 선택된 경우 모든 메뉴를 반환
     if (selectedCategory === 'all')
@@ -125,7 +108,7 @@ function CategoryPage() {
     width: '390px',
     height: '844px',
     margin: '0 auto',
-    border: '0px solid black', // 경계를 확인하기 위한 임시 스타일
+    border: '1px solid black', // 경계를 확인하기 위한 임시 스타일
   };
 
   const customStyles = {
@@ -264,12 +247,7 @@ function CategoryPage() {
               </div>
 
               <Modal isOpen={menuIsOpen} className="detail-modal">
-                <div>
-                  <MenuOptionBoth
-                    menu={selectedItem}
-                    setOption={setMenuIsOpen}
-                  />
-                </div>
+                <MenuOptionBoth menu={selectedItem} setOption={setMenuIsOpen} />
               </Modal>
 
               <div className="menu-grid-container">
@@ -351,7 +329,6 @@ function CategoryPage() {
                     <img
                       src={`${process.env.PUBLIC_URL}/imgs/right.png`}
                       className="page-button"
-                      onClick={null}
                     />
                   ) : (
                     <img
@@ -426,18 +403,14 @@ function CategoryPage() {
             </div>
             <div className="container-baguni-row">
               <div className="">
-                {/* <img
-                  src={`${process.env.PUBLIC_URL}/imgs/bubble.png`}
-                  className="bubble"
-                />
-                <p className="bubble-text">안녕하세요 </p> */}
-                <div className="bubble-loc">
-                  <Message message={messages} />
-                </div>
                 <img
                   src={`${process.env.PUBLIC_URL}/imgs/signature.png`}
                   className="boonga"
                 />
+
+                <div className="bubble-loc">
+                  <Message message={messages} />
+                </div>
               </div>
               <div className="pay-button-loc">
                 <button className="pay-button" onClick={modalPay}>
@@ -467,16 +440,16 @@ function CategoryPage() {
               </p>
             </div>
             <div>
-              <div style={{ position: 'relative', zIndex: 2 }}>
-                <Message message={messages2} className="bubble2" />
-              </div>
               <img
                 src={`${process.env.PUBLIC_URL}/imgs/signature.png`}
                 className="boonga2"
               />
+              <div style={{ position: 'relative', zIndex: 2 }}>
+                <Message message={messages2} className="bubble2" />
+              </div>
             </div>
           </div>
-          <div>
+          <div className="detail-modal-checktext-container-loc">
             <div className="detail-modal-checktext-container">
               <p className="detail-modal-checktext">
                 주문 세부내용을 확인해 주세요!
@@ -484,28 +457,31 @@ function CategoryPage() {
             </div>
           </div>
           <div className="detail-modal-list">
-            {!isZero
-              ? shoppingCart.map((menuDetail) => (
-                  <div className="detail-modal-item">
-                    <p className="detail-modal-menu-text">{menuDetail.name}</p>
-                    <span className="detail-modal-options-text">
-                      {menuDetail.temp === 'ice' ? 'ICE' : 'HOT'}
-                      {menuDetail.tumbler ? `,${menuDetail.tumbler}` : null},
-                      {menuDetail.size === 'small'
-                        ? 'S'
-                        : menuDetail.size === 'medium'
-                        ? 'M'
-                        : 'L'}
-                    </span>
-                    <span className="detail-modal-count-text">
-                      {menuDetail.count} 개
-                    </span>
-                    <span className="detail-modal-price-text">
-                      {menuDetail.price} 원
-                    </span>
-                  </div>
-                ))
-              : '현재 선택한 메뉴가 없습니다.'}
+            {shoppingCart.length ? (
+              shoppingCart.map((menuDetail) => (
+                <div className="detail-modal-item">
+                  <p className="detail-modal-menu-text">{menuDetail.name}</p>
+                  <span className="detail-modal-options-text">
+                    {menuDetail.temp === 'hot' ? '따뜻하게' : '시원하게'},{' '}
+                    {menuDetail.size === 'large'
+                      ? 'L'
+                      : menuDetail.size === 'medium'
+                      ? 'M'
+                      : 'S'}
+                  </span>
+                  <span className="detail-modal-count-text">
+                    {menuDetail.count} 개
+                  </span>
+                  <span className="detail-modal-price-text">
+                    {menuDetail.price} 원
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div className="detail-modal-nomenu">
+                현재 선택한 메뉴가 없습니다.
+              </div>
+            )}
           </div>
           <div className="detail-modal-total-container">
             <span>총 수량:</span>

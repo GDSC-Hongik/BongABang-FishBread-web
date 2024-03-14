@@ -15,7 +15,7 @@ function StartPage() {
     width: "386px",
     height: "840px",
     margin: "0 auto",
-    border: "0px solid black", // 경계를 확인하기 위한 임시 스타일
+    border: "1px solid black", // 경계를 확인하기 위한 임시 스타일
   };
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function StartPage() {
         </>
       ) : (
         <>
-          <div></div>
+          <div>(it works well only in iphon12pro screen size)</div>
           <div></div>
           <div>
             <div className="Logo">

@@ -11,10 +11,10 @@
     1fr
   ); /* 한 줄에 3개의 아이템을 표시합니다. */
   grid-template-rows: repeat(3, 1fr); /* 세 줄을 만듭니다. */
-  gap: 10px; /* 아이템 사이의 간격을 설정합니다. */
-  width: 32vh;
-  height: 51vh;
-  margin-top: 5%;
+  gap: 8px; /* 아이템 사이의 간격을 설정합니다. */
+  width: 285px;
+  height: 480px;
+  margin-top: 15px;
 }
 
 .menu-item1 {
@@ -28,8 +28,8 @@
   border: 1px solid #fcac43;
   padding: 16px;
   border-radius: 10px; /* 둥근 모서리 */
-  width: 6vh; /* 부모 요소에 맞게 너비를 설정합니다. */
-  height: 14vh; /* 내용에 맞게 높이를 조절합니다. */
+  width: 55px; /* 부모 요소에 맞게 너비를 설정합니다. */
+  height: 110px; /* 내용에 맞게 높이를 조절합니다. */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -45,12 +45,12 @@
   gap: 10px;
 }
 .menu-image1 {
-  width: 9.7vh; /* 이미지의 너비를 메뉴 아이템의 80%로 설정합니다. */
-  height: 10vh; /* 이미지의 높이를 자동으로 조절합니다. */
+  width: 100%; /* 이미지의 너비를 메뉴 아이템의 80%로 설정합니다. */
+  height: 100%; /* 이미지의 높이를 자동으로 조절합니다. */
   object-fit: contain; /* 이미지 비율을 유지하면서 컨테이너에 맞게 조절합니다. */
+  overflow: hidden;
 }
 
-/* =------------- */
 /* =------------- */
 /* =------------- */
 /* =------------- */
@@ -76,21 +76,21 @@
 }
 
 .boonga {
-  width: 110px;
-  height: 110px;
-  position: fixed;
-  bottom: 60px; /* 원하는 위치로 조정 */
-  right: 20px; /* 원하는 위치로 조정 */
+  width: 90px;
+  height: 90px;
+  position: absolute;
+  margin-top: 50px;
+  margin-left: 70px;
+  z-index: -1;
 }
 .boonga2 {
-  width: 100px;
-  height: 100px;
-  position: fixed;
-  bottom: 670px;
-  right: 20px;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  margin-top: 40px;
+  margin-left: 70px;
 }
-.bubble-loc {
-}
+
 .bubble-text {
   width: 120px;
   height: 40px;
@@ -102,14 +102,7 @@
   text-align: center;
   font-weight: bold;
 }
-.pay-button-loc {
-  position: fixed;
-  bottom: 20px; /* 원하는 위치로 조정 */
-  right: 24px; /* 원하는 위치로 조정 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 .pay-button {
   width: 107px;
   height: 52px;
@@ -120,6 +113,8 @@
   border-radius: 15px;
   border: none;
   text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+  margin-left: 25px;
+  margin-top: 10px;
 }
 
 .team-logo {
@@ -253,9 +248,11 @@
 
 .menu-name1,
 .menu-price1 {
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 11px;
+  font-weight: bold;
   text-align: center;
-  color: #010101; /* 글자 색상 */
+  color: #585353; /* 글자 색상 */
   white-space: nowrap; /* 텍스트를 한 줄에 표시 */
   overflow: hidden; /* 내용이 넘칠 경우 숨김 처리 */
   text-overflow: ellipsis;
@@ -267,9 +264,9 @@
 .detail-modal {
   display: block;
   margin: auto;
-  margin-top: 13%;
-  width: 40vh;
-  height: 87vh;
+  margin-top: 50px;
+  width: 350px;
+  height: 750px;
   background-color: #ffffff;
   border-radius: 15px;
   border: 1px solid #fcac43;
@@ -277,15 +274,14 @@
 
 .detail-modal-container {
   display: grid;
-  grid-template-rows: 4fr 1fr 8fr 1fr 1fr 3fr;
+  grid-template-rows: 2.2fr 1fr 8fr 1fr 1fr 3fr;
   gap: 10px;
-  height: 87vh;
+  height: 810px;
 }
 .detail-modal-header-container {
   display: grid;
   grid-template-columns: 3fr 2fr;
   gap: 10px;
-  margin-bottom: -7%;
 }
 .detail-modal-date-container {
   margin-left: 10%;
@@ -303,14 +299,19 @@
   color: #000000;
   font-weight: bold; /* 글자 두께 */
 }
+.detail-modal-checktext-container-loc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .detail-modal-checktext-container {
   padding: 2px; /* 필요한 경우 패딩 추가 */
   background-color: #fcac43; /* 배경색 */
   border: 1px solid #fbad42; /* 테두리 */
   border-radius: 10px; /* 둥근 모서리 */
-  width: 300px;
+  width: 320px;
   height: 26px;
-  margin-left: 4%;
+
   font-size: 18px; /* 글자 크기 */
   color: #ffffff;
   font-weight: bold; /* 글자 두께 */
@@ -329,7 +330,7 @@
   border: 0.2px solid rgb(213, 213, 213);
   overflow-y: auto;
   margin-left: 3%;
-  width: 36vh;
+  width: 320px;
   min-height: 45vh;
   max-height: 45vh;
   background-color: #f7f7f7;
@@ -354,6 +355,11 @@
   margin: 0;
   color: #000000;
   word-wrap: break-word;
+}
+.detail-modal-nomenu {
+  text-align: center;
+  margin-top: 10px;
+  color: #939292;
 }
 
 .detail-modal-menu-text {

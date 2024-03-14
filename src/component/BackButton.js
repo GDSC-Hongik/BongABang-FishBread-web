@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import './BackButton.css';
+import { useNavigate } from "react-router-dom";
+import "./BackButton.css";
 
 function BackButton({ shoppingCart, setShoppingCart }) {
   const navigate = useNavigate();

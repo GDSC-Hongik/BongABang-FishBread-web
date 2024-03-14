@@ -1,10 +1,10 @@
 .BackButton {
   font-size: 20px;
   padding: 7.68px;
-  padding-left: 7px;
-  padding-right: 9px;
-  margin-top: 15px;
-  margin-left: 10px;
+  padding-left: 0px;
+  padding-right: 5px;
+  margin-top: 19px;
+  margin-left: -2px;
   background-color: white;
   border: none;
 }
