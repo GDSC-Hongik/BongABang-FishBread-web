@@ -8,6 +8,7 @@ import MenuOptionBoth from '../component/MenuOptionBoth';
 import Message from '../component/Message';
 import { useShoppingCart } from '../hooks/shoppingCart';
 import { audioLoad } from '../api';
+import AudioRecorder from '../component/AudioRecorder';
 
 function CategoryPage() {
   const [messages, setMessages] = useState(
@@ -26,7 +27,6 @@ function CategoryPage() {
   const [payIsOpen, setPayIsOpen] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [audioURL, setAudioURL] = useState('');
 
   const getMenus = async () => {
     const json = await (await fetch('/megaMenu.json')).json(); // url : 절대주소/api/cafe/v1/menus
@@ -37,17 +37,7 @@ function CategoryPage() {
   useEffect(() => {
     getMenus();
     Modal.setAppElement('#root');
-
-    const URL = audioLoad();
-    setAudioURL(URL);
   }, []);
-
-  useEffect(() => {
-    if (audioURL) {
-      const audio = new Audio(audioURL);
-      audio.play();
-    }
-  }, [audioURL]);
 
   // 총 가격을 계산하는 함수
   const calculateTotalPrice = () => {
@@ -161,6 +151,7 @@ function CategoryPage() {
         <h1>Loading ...</h1>
       ) : (
         <>
+          <AudioRecorder />
           <div className="container-colum">
             <div className="team-color">
               <img
