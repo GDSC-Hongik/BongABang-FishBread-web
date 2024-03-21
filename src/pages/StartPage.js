@@ -30,7 +30,7 @@ function StartPage() {
         </>
       ) : (
         <>
-          <div>(it works well only in iphon12pro screen size)</div>
+          <div></div>
           <div></div>
           <div>
             <div className="Logo">

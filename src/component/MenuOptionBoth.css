@@ -8,7 +8,7 @@
   border-radius: 20px;
   z-index: 999;
   position: absolute;
-  top: 50%;
+  top: 47%;
   left: 50%;
   transform: translate(-50%, -50%);
   backdrop-filter: blur(11px);

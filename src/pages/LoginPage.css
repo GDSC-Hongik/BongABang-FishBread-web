@@ -1,0 +1,50 @@
+.login-container {
+  display: grid;
+  grid-template-rows: 1fr 2.5fr 1.5fr;
+  gap: 10px;
+  width: 385px;
+  height: 840px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-img {
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+}
+
+.login-btn {
+  width: 328px;
+  height: 41px;
+  font-size: 15px;
+  font-weight: 900;
+  color: white;
+  background-color: #fcac43;
+  border: none;
+  margin-bottom: 7px;
+}
+
+.login-signup {
+  color: black;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.login-text {
+  font-size: 35px;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.login-error-inform {
+  height: 20px;
+  font-size: 13px;
+  text-align: center;
+  color: red;
+}

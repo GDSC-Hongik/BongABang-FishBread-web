@@ -248,7 +248,7 @@
 
 .menu-name1,
 .menu-price1 {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-weight: bold;
   text-align: center;
@@ -270,6 +270,17 @@
   background-color: #ffffff;
   border-radius: 15px;
   border: 1px solid #fcac43;
+}
+
+.detail-modal2 {
+  display: block;
+  margin: auto;
+  margin-top: 50px;
+  width: 350px;
+  height: 000px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  border: 0px solid #fcac43;
 }
 
 .detail-modal-container {

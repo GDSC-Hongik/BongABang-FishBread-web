@@ -29,9 +29,19 @@ function CategoryPage() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const getMenus = async () => {
-    const json = await (await fetch('/megaMenu.json')).json(); // url : 절대주소/api/cafe/v1/menus
-    setMenus(json);
-    setLoading(false);
+    try {
+      const response = await fetch('/megaMenu.json'); // http://ec2-54-79-29-119.ap-southeast-2.compute.amazonaws.com:8080/api/cafe/v1/menus/
+      if (!response.ok) {
+        throw new Error('Failed to fetch menus');
+      }
+      const json = await response.json();
+      setMenus(json);
+      setLoading(false);
+      console.log(menus);
+    } catch (error) {
+      console.error('Error fetching menus: ', error);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -47,11 +57,6 @@ function CategoryPage() {
     });
     return totalPrice;
   };
-
-  useEffect(() => {
-    const totalCount = calculateTotalCount();
-    // 여기서 totalPrice를 사용할 수 있습니다.
-  }, [shoppingCart]);
 
   // 총 가격을 계산하는 함수
   const calculateTotalCount = () => {
