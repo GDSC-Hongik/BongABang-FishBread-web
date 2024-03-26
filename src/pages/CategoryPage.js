@@ -76,6 +76,21 @@ function CategoryPage() {
     }
   }
 
+  var AudioContext;
+  var audioContext;
+
+  window.onload = function () {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then(() => {
+        AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContext();
+      })
+      .catch((e) => {
+        console.error(`Audio permissions denied: ${e}`);
+      });
+  };
+
   // 총 가격을 계산하는 함수
   const calculateTotalPrice = () => {
     let totalPrice = 0;
