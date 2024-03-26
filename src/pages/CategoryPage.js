@@ -46,9 +46,7 @@ function CategoryPage() {
   useEffect(() => {
     getMenus();
     Modal.setAppElement('#root');
-    setAudioURL(
-      'https://bongabangaudio.s3.ap-southeast-2.amazonaws.com/audio/newoutput_v1_20240309142553.mp3'
-    );
+    fetchAudioURLFromServer();
   }, []);
 
   useEffect(() => {
@@ -60,19 +58,16 @@ function CategoryPage() {
         audio.pause();
       };
     }
+    fetchAudioURLFromServer();
   }, [audioURL]);
 
   async function fetchAudioURLFromServer() {
     try {
       const response = await fetch('/audioURL'); // 오디오 URL을 반환하는 서버의 엔드포인트
-      if (!response.ok) {
-        throw new Error('Failed to fetch audio URL');
-      }
       const { url } = await response.json();
-      return url;
+      setAudioURL(url);
     } catch (error) {
       console.error('Error fetching audio URL: ', error);
-      return '';
     }
   }
 
