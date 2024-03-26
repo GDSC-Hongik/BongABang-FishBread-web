@@ -26,6 +26,66 @@ function CategoryPage() {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [audioURL, setAudioURL] = useState('');
+  const [recording, setRecording] = useState(false);
+  const [audioChunks, setAudioChunks] = useState([]);
+
+  let mediaRecorder;
+  let stream;
+
+  const startRecording = async () => {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable = (event) => {
+      setAudioChunks((prevChunks) => [...prevChunks, event.data]);
+    };
+
+    mediaRecorder.start();
+    setRecording(true);
+  };
+
+  const stopRecording = () => {
+    if (setRecording == true) {
+      mediaRecorder.stop();
+      stream.getTracks().forEach((track) => track.stop());
+      setRecording(false);
+    }
+  };
+
+  const sendDataToServer = async () => {
+    const blob = new Blob(audioChunks, { type: 'audio/mpeg' });
+    const formData = new FormData();
+    formData.append('audio', blob);
+
+    try {
+      const response = await fetch(
+        'http://ec2-54-79-29-119.ap-southeast-2.compute.amazonaws.com:8080/api/cafe/v1/chatgpt',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setAudioURL(data.audio_url);
+      } else {
+        console.error('Failed to upload audio');
+      }
+    } catch (error) {
+      console.error('Error uploading audio:', error);
+    }
+  };
+
+  useEffect(() => {
+    let timeout;
+
+    if (recording) {
+      timeout = setTimeout(stopRecording, 3000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [recording]);
 
   const getMenus = async () => {
     try {
@@ -46,9 +106,7 @@ function CategoryPage() {
   useEffect(() => {
     getMenus();
     Modal.setAppElement('#root');
-    setAudioURL(
-      'https://bongabangaudio.s3.ap-southeast-2.amazonaws.com/audio/newoutput_v1_20240309142553.mp3'
-    );
+    fetchAudioURLFromServer();
   }, []);
 
   useEffect(() => {
@@ -60,21 +118,35 @@ function CategoryPage() {
         audio.pause();
       };
     }
+    fetchAudioURLFromServer();
   }, [audioURL]);
 
   async function fetchAudioURLFromServer() {
     try {
       const response = await fetch('/audioURL'); // 오디오 URL을 반환하는 서버의 엔드포인트
-      if (!response.ok) {
-        throw new Error('Failed to fetch audio URL');
-      }
       const { url } = await response.json();
-      return url;
+      setAudioURL(url);
     } catch (error) {
       console.error('Error fetching audio URL: ', error);
-      return '';
     }
   }
+
+  var AudioContext;
+  var audioContext;
+
+  window.onload = function () {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then(() => {
+        AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContext();
+      })
+      .catch((e) => {
+        console.error(`Audio permissions denied: ${e}`);
+      });
+  };
+
+  // navigator.mediaDevices.getUserMedia({ audio: true }).then();
 
   // 총 가격을 계산하는 함수
   const calculateTotalPrice = () => {
@@ -183,6 +255,8 @@ function CategoryPage() {
         <h1>Loading ...</h1>
       ) : (
         <>
+          <button onClick={startRecording}>play</button>
+          <button onClick={stopRecording}>stop</button>
           <div className="container-colum">
             <div className="team-color">
               <img
