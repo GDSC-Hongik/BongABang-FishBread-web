@@ -7,8 +7,6 @@ import CurrentTime from '../component/CurrentTime';
 import MenuOptionBoth from '../component/MenuOptionBoth';
 import Message from '../component/Message';
 import { useShoppingCart } from '../hooks/shoppingCart';
-import { audioLoad } from '../api';
-import AudioRecorder from '../component/AudioRecorder';
 
 function CategoryPage() {
   const [messages, setMessages] = useState(
@@ -27,6 +25,7 @@ function CategoryPage() {
   const [payIsOpen, setPayIsOpen] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [audioURL, setAudioURL] = useState('');
 
   const getMenus = async () => {
     try {
@@ -47,7 +46,35 @@ function CategoryPage() {
   useEffect(() => {
     getMenus();
     Modal.setAppElement('#root');
+    setAudioURL(
+      'https://bongabangaudio.s3.ap-southeast-2.amazonaws.com/audio/newoutput_v1_20240309142553.mp3'
+    );
   }, []);
+
+  useEffect(() => {
+    if (audioURL) {
+      const audio = new Audio(audioURL);
+      audio.play();
+
+      return () => {
+        audio.pause();
+      };
+    }
+  }, [audioURL]);
+
+  async function fetchAudioURLFromServer() {
+    try {
+      const response = await fetch('/audioURL'); // 오디오 URL을 반환하는 서버의 엔드포인트
+      if (!response.ok) {
+        throw new Error('Failed to fetch audio URL');
+      }
+      const { url } = await response.json();
+      return url;
+    } catch (error) {
+      console.error('Error fetching audio URL: ', error);
+      return '';
+    }
+  }
 
   // 총 가격을 계산하는 함수
   const calculateTotalPrice = () => {
@@ -156,7 +183,6 @@ function CategoryPage() {
         <h1>Loading ...</h1>
       ) : (
         <>
-          <AudioRecorder />
           <div className="container-colum">
             <div className="team-color">
               <img
